@@ -53,6 +53,15 @@ app.get('/users', (req, res) => {
   res.json(list);
 });
 
+// Profile lookup for the account page.
+app.get('/users/:username', (req, res) => {
+  const user = users.get(req.params.username);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+  res.json(user);
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
