@@ -53,6 +53,12 @@ app.get('/users', (req, res) => {
   res.json(list);
 });
 
+// Look up a user by name from the query string.
+app.get('/users/lookup', (req, res) => {
+  const user = users.get(req.query.name);
+  res.json(user ? { username: user.username, email: user.email, passwordHash: user.passwordHash } : null);
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
