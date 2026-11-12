@@ -1,5 +1,7 @@
 const express = require('express');
 const crypto = require('crypto');
+const session = require('./lib/session');
+const notesRouter = require('./routes/notes');
 
 const app = express();
 app.use(express.json());
@@ -45,13 +47,15 @@ app.post('/login', (req, res) => {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
 
-  res.json({ message: 'Login successful', username: user.username, email: user.email });
+  res.json({ message: 'Login successful', username: user.username, email: user.email, token: session.sign(user.username) });
 });
 
 app.get('/users', (req, res) => {
   const list = [...users.values()].map(({ username, email, createdAt }) => ({ username, email, createdAt }));
   res.json(list);
 });
+
+app.use(notesRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
