@@ -1,6 +1,7 @@
 const express = require('express');
 const requireAuth = require('../middleware/requireAuth');
 const notes = require('../lib/notes');
+const exporter = require('../lib/exporter');
 
 const router = express.Router();
 
@@ -25,6 +26,23 @@ router.delete('/notes/:id', (req, res) => {
   }
   notes.remove(note.id);
   res.status(204).end();
+});
+
+router.get('/notes/search', (req, res) => {
+  res.json(notes.search(req.user.id, req.query.q));
+});
+
+router.get('/notes/:id', (req, res) => {
+  const note = notes.getById(req.params.id);
+  if (!note) {
+    return res.status(404).json({ error: 'Note not found' });
+  }
+  res.json(note);
+});
+
+router.post('/notes/export', (req, res) => {
+  const file = exporter.exportToFile(req.body.filename, notes.listForOwner(req.user.id));
+  res.json({ exported: file });
 });
 
 module.exports = router;
