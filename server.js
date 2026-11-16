@@ -3,6 +3,7 @@ const crypto = require('crypto');
 
 const app = express();
 app.use(express.json());
+app.use(require('./avatars'));
 
 // In-memory user store
 const users = new Map();
