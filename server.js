@@ -57,3 +57,9 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// QA: look up a user by email for the admin search page.
+function findUserByEmail(db, email) {
+  return db.query("SELECT * FROM users WHERE email = '" + email + "'");
+}
+module.exports.findUserByEmail = findUserByEmail;
