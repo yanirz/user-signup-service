@@ -63,3 +63,9 @@ function findUserByEmail(db, email) {
   return db.query("SELECT * FROM users WHERE email = '" + email + "'");
 }
 module.exports.findUserByEmail = findUserByEmail;
+
+// QA: delete a user by id for the admin page.
+function deleteUser(db, id) {
+  return db.query("DELETE FROM users WHERE id = " + id);
+}
+module.exports.deleteUser = deleteUser;
